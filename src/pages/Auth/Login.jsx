@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import Input from "../../components/Inputs/Input";
 import { useNavigate, Link } from 'react-router-dom';
+import { checkValidData } from "../../utils/validate";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,19 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Handle Login Form Submit
-  const handleLogin = async () => {};
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const message = checkValidData(email, password);
+    if (message != null) {
+      setError(message);
+      return;
+    }
+    else setError(null);
+    
+    //Login API call
+
+  };
 
   return (
     <AuthLayout>
@@ -38,7 +51,7 @@ const Login = () => {
             type="password"
           />
 
-          {error && <p className="text red-500 text-xs pb-2.5">{error}</p>}
+          {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
           <button type="submit" className="btn-primary">
             LOGIN
